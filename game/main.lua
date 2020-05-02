@@ -1,7 +1,8 @@
--- libraries
-anim8 = require('/src/libraries/anim8')
 -- classes
 require('/src/player')
+require('/src/keyboard')
+-- libraries
+anim8 = require('/src/libraries/anim8')
 
 local background, p
 
