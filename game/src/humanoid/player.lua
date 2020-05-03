@@ -13,7 +13,7 @@ function Player:new(x, y, name, imgFront, imgBack)
 	self.level = 1
 	self.life = MAX_LIFE
 	self.numberSpells = 0
-	self.direction = 'L' -- N / S / L / O
+	self.direction = 'right'
 	self.x, self.y = x, y
 
 	-- Image
@@ -31,19 +31,19 @@ function Player:new(x, y, name, imgFront, imgBack)
 end
 
 function Player:update(dt)
+	self:move()
 	if self.direction ~= nil then
 		self.animate:update(dt)
 	else
 		self.animate:gotoFrame(1)
 	end	
-	self:move(math.randomseed(4))
 end
 
 function Player:draw()
-	if self.direction == 'O' then
+	if self.direction == 'left' then
 		self.animate:draw(self.imgBack, self.x, self.y)
 		self.imgPrevious = self.imgBack
-	elseif self.direction == 'L' then
+	elseif self.direction == 'right' then
 		self.animate:draw(self.imgFront, self.x, self.y)
 		self.imgPrevious = self.imgFront
 	else
@@ -54,22 +54,24 @@ end
 function Player:move()
 	if love.keyboard.isDown('w') then
 		self.y = self.y - WALK_SPEED
-		self.direction = 'N'
+		self.direction = 'up'
 	elseif love.keyboard.isDown('s') then
 		self.y = self.y + WALK_SPEED
-		self.direction = 'S'
+		self.direction = 'down'
 	elseif love.keyboard.isDown('d') then
 		self.x = self.x + WALK_SPEED
-		self.direction = 'L'
+		self.direction = 'right'
 	elseif love.keyboard.isDown('a') then
 		self.x = self.x - WALK_SPEED
-		self.direction = 'O'
+		self.direction = 'left'
 	else
 		self.direction = nil
-	end  
+	end
+	camera:move(self.x, self.y)  
 end
 
 function Player:camera()
+	
 end
 
 function Player:becomeDemon()

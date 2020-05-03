@@ -1,10 +1,6 @@
 Map = {}
 Map.__index = Map
 
---Const
-local WIDTH = 3000
-local HEIGHT = 3000
-
 function Map:new(name, image)
 	local sef = setmetatable({}, Map)
 
