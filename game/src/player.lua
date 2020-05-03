@@ -1,14 +1,10 @@
-Player = {}
-Player.__index = Player
+Player = setmetatable({}, Character)
 
 -- Const
 local WALK_SPEED = 7
-local RUN_SPEED = 0
 local MAX_LIFE = 0
 
-function Player:new(x,y,name)
-	local	self = setmetatable({}, Player)
-	
+function Player:new(x, y, name, imgFront, imgBack)
 	-- Variables
 	self.name = name
 	self.level = 1
@@ -18,8 +14,8 @@ function Player:new(x,y,name)
 	self.x, self.y = x, y
 
 	-- Image
-	self.imgFront = love.graphics.newImage('pixel_art/protagonist/demon_warrior_grid.png')
-	self.imgBack = love.graphics.newImage('pixel_art/protagonist/demon_warrior_grid_iv.png')
+	self.imgFront = love.graphics.newImage(imgFront)
+	self.imgBack = love.graphics.newImage(imgBack)
 	self.imgPrevious = self.imgFront
 
 	-- Grid
@@ -31,41 +27,14 @@ function Player:new(x,y,name)
 	return self
 end
 
-function Player:update(dt)
-	if self.direction ~= nil then
-		self.animate:update(dt)
-	else
-		self.animate:gotoFrame(1)
-	end	
-	self:move()
+function Player:camera()
 end
 
-function Player:draw()
-	if self.direction == 'O' then
-		self.animate:draw(self.imgBack, self.x, self.y)
-		self.imgPrevious = self.imgBack
-	elseif self.direction == 'L' then
-		self.animate:draw(self.imgFront, self.x, self.y)
-		self.imgPrevious = self.imgFront
-	else
-		self.animate:draw(self.imgPrevious, self.x, self.y)
-	end
+function Player:becomeDemon()
 end
 
-function Player:move()
-	if love.keyboard.isDown('w') then
-		self.y = self.y - WALK_SPEED
-		self.direction = 'N'
-	elseif love.keyboard.isDown('s') then
-		self.y = self.y + WALK_SPEED
-		self.direction = 'S'
-	elseif love.keyboard.isDown('d') then
-		self.x = self.x + WALK_SPEED
-		self.direction = 'L'
-	elseif love.keyboard.isDown('a') then
-		self.x = self.x - WALK_SPEED
-		self.direction = 'O'
-	else
-		self.direction = nil
-	end  
+function Player:isMonster()
+end
+
+function Player:becomeHuman()
 end
