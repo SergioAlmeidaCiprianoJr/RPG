@@ -1,17 +1,18 @@
-Character = {}
-Character.__index = Character
+Player = {}
+Player.__index = Player
 
 -- Const
 local WALK_SPEED = 7
 local MAX_LIFE = 0
 
-function Character:new(x, y, name, level, imgFront, imgBack)
-	local	self = setmetatable({}, Character)
+function Player:new(x, y, name, imgFront, imgBack)
+	self = setmetatable({}, Player)
 	
 	-- Variables
 	self.name = name
-	self.level = level
+	self.level = 1
 	self.life = MAX_LIFE
+	self.numberSpells = 0
 	self.direction = 'L' -- N / S / L / O
 	self.x, self.y = x, y
 
@@ -29,16 +30,16 @@ function Character:new(x, y, name, level, imgFront, imgBack)
 	return self
 end
 
-function Character:update(dt)
+function Player:update(dt)
 	if self.direction ~= nil then
 		self.animate:update(dt)
 	else
 		self.animate:gotoFrame(1)
 	end	
-	self:move()
+	self:move(math.randomseed(4))
 end
 
-function Character:draw()
+function Player:draw()
 	if self.direction == 'O' then
 		self.animate:draw(self.imgBack, self.x, self.y)
 		self.imgPrevious = self.imgBack
@@ -50,7 +51,7 @@ function Character:draw()
 	end
 end
 
-function Character:move()
+function Player:move()
 	if love.keyboard.isDown('w') then
 		self.y = self.y - WALK_SPEED
 		self.direction = 'N'
@@ -66,4 +67,16 @@ function Character:move()
 	else
 		self.direction = nil
 	end  
+end
+
+function Player:camera()
+end
+
+function Player:becomeDemon()
+end
+
+function Player:isDemon()
+end
+
+function Player:becomeHuman()
 end
