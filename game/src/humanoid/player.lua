@@ -70,10 +70,6 @@ function Player:move()
 	camera:move(self.x, self.y)  
 end
 
-function Player:camera()
-	
-end
-
 function Player:becomeDemon()
 end
 
