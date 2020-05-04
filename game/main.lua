@@ -10,7 +10,7 @@ anim8 = require('/src/libraries/anim8')
 local background, p
 
 function love.load()
-	player = Player:new(camera.x, camera.y, 'Sergio', 'pixel_art/protagonist/demon_warrior_grid.png', 'pixel_art/protagonist/demon_warrior_grid_iv.png')
+	player = Player:new(1000, 1000, 'Sergio', 'pixel_art/protagonist/demon_warrior_grid.png', 'pixel_art/protagonist/demon_warrior_grid_iv.png')
 	map = Map:new('', 'pixel_art/scenario/cidade.png')
 end
 
