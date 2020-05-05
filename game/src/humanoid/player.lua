@@ -2,8 +2,8 @@ Player = {}
 Player.__index = Player
 
 -- Const
-local WALK_SPEED = 7
-local MAX_LIFE = 0
+local WALK_SPEED = 400
+local MAX_LIFE = 100
 
 function Player:new(x, y, name, imgFront, imgBack)
 	self = setmetatable({}, Player)
@@ -43,7 +43,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-	local x, y = self:fixPosition(self.collider:getPosition())
+	local x, y = self:fixPosition()
 	if self.direction == 'left' then
 		self.animate:draw(self.imgBack, x, y)
 		self.imgPrevious = self.imgBack
@@ -56,32 +56,41 @@ function Player:draw()
 end
 
 function Player:move()
-	local x, y = self.collider:getPosition()
-
+	local vectorX, vectorY = 0, 0
+	-- Here we need to use ifs insteed of elseifs because we want to move in diagonal
+	-- and without elseif the movement is more fluid
 	if love.keyboard.isDown('w') then
-		y = y - WALK_SPEED
+		vectorY = -1
 		self.direction = 'up'
-	elseif love.keyboard.isDown('s') then
-		y = y + WALK_SPEED
+	end
+	if love.keyboard.isDown('s') then
+		vectorY = 1
 		self.direction = 'down'
-	elseif love.keyboard.isDown('d') then
-		x = x + WALK_SPEED
+	end
+	if love.keyboard.isDown('d') then
+		vectorX = 1
 		self.direction = 'right'
-	elseif love.keyboard.isDown('a') then
-		x = x - WALK_SPEED
+	end
+	if love.keyboard.isDown('a') then
+		vectorX = -1
 		self.direction = 'left'
-	else
+	end
+	if love.keyboard.isDown('w') == false
+	   and love.keyboard.isDown('s') == false
+	   and love.keyboard.isDown('d') == false
+	   and love.keyboard.isDown('a') == false
+	then
 		self.direction = nil
 	end
-
-	self.collider:setPosition(x, y)
-	camera:move(x, y)  
+	self.collider:setLinearVelocity(vectorX*WALK_SPEED, vectorY*WALK_SPEED)
+	local x, y = self:fixPosition()
+	camera:move(x, y)
 end
 
-function Player:fixPosition(x, y)
+function Player:fixPosition()
 	-- fix x and y provided by self.collider
-	-- getPosition gives rectangle's center (x and y)
-	-- 110 fix height, so that the box is on the legs
+	-- getPosition gives rectangle's center x and y
+	local x, y = self.collider:getPosition()
 	return x-self.box.w/2, y-self.box.h/2-110
 end
 
