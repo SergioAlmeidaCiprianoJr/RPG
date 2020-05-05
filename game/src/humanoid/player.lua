@@ -14,7 +14,6 @@ function Player:new(x, y, name, imgFront, imgBack)
 	self.life = MAX_LIFE
 	self.numberSpells = 0
 	self.direction = 'right'
-	self.x, self.y = x, y
 
 	-- Image
 	self.imgFront = love.graphics.newImage(imgFront)
@@ -26,6 +25,10 @@ function Player:new(x, y, name, imgFront, imgBack)
 
 	-- Animation
 	self.animate = anim8.newAnimation(self.grid('1-3',1), 0.1)
+
+	-- Collider Map
+	self.box = {w = 120, h = 40} -- width and height
+	self.collider = world:newRectangleCollider(x, y, self.box.w, self.box.h) -- creating box for legs 
 
 	return self
 end
@@ -40,34 +43,46 @@ function Player:update(dt)
 end
 
 function Player:draw()
+	local x, y = self:fixPosition(self.collider:getPosition())
 	if self.direction == 'left' then
-		self.animate:draw(self.imgBack, self.x, self.y)
+		self.animate:draw(self.imgBack, x, y)
 		self.imgPrevious = self.imgBack
 	elseif self.direction == 'right' then
-		self.animate:draw(self.imgFront, self.x, self.y)
+		self.animate:draw(self.imgFront, x, y)
 		self.imgPrevious = self.imgFront
 	else
-		self.animate:draw(self.imgPrevious, self.x, self.y)
+		self.animate:draw(self.imgPrevious, x, y)
 	end
 end
 
 function Player:move()
+	local x, y = self.collider:getPosition()
+
 	if love.keyboard.isDown('w') then
-		self.y = self.y - WALK_SPEED
+		y = y - WALK_SPEED
 		self.direction = 'up'
 	elseif love.keyboard.isDown('s') then
-		self.y = self.y + WALK_SPEED
+		y = y + WALK_SPEED
 		self.direction = 'down'
 	elseif love.keyboard.isDown('d') then
-		self.x = self.x + WALK_SPEED
+		x = x + WALK_SPEED
 		self.direction = 'right'
 	elseif love.keyboard.isDown('a') then
-		self.x = self.x - WALK_SPEED
+		x = x - WALK_SPEED
 		self.direction = 'left'
 	else
 		self.direction = nil
 	end
-	camera:move(self.x, self.y)  
+
+	self.collider:setPosition(x, y)
+	camera:move(x, y)  
+end
+
+function Player:fixPosition(x, y)
+	-- fix x and y provided by self.collider
+	-- getPosition gives rectangle's center (x and y)
+	-- 110 fix height, so that the box is on the legs
+	return x-self.box.w/2, y-self.box.h/2-110
 end
 
 function Player:becomeDemon()
