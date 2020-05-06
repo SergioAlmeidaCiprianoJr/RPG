@@ -26,9 +26,10 @@ function Player:new(x, y, name, imgFront, imgBack)
 	-- Animation
 	self.animate = anim8.newAnimation(self.grid('1-3',1), 0.1)
 
-	-- Collider Map
+	-- Collider
 	self.box = {w = 120, h = 40} -- width and height
 	self.collider = world:newRectangleCollider(x, y, self.box.w, self.box.h) -- creating box for legs 
+	self.collider:setCollisionClass('Solid')
 
 	return self
 end

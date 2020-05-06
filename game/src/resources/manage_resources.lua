@@ -1,10 +1,10 @@
 function loadResources()
     -- World add collision mecanics
     world = wf.newWorld()
+    loadCollisionClass()
 
     -- Creating Player
-    playerImg = {right = '/pixel_art/protagonist/demon_warrior_grid.png', left = '/pixel_art/protagonist/demon_warrior_grid_iv.png'}
-    player = Player:new(500, 500, 'Sergio', playerImg.right, playerImg.left)
+    loadPlayer()
     
     -- Loading all maps
     loadBattlefield()
@@ -21,6 +21,16 @@ function drawResources()
 	player:draw()
 	world:draw()
 	camera:unset()
+end
+
+function loadCollisionClass()
+    world:addCollisionClass('Solid')
+    world:addCollisionClass('Ghost', {ignores = {'Solid'}})
+end
+
+function loadPlayer()
+    playerImg = {right = '/pixel_art/protagonist/demon_warrior_grid.png', left = '/pixel_art/protagonist/demon_warrior_grid_iv.png'}
+    player = Player:new(500, 500, 'Sergio', playerImg.right, playerImg.left)
 end
 
 function loadBattlefield()
