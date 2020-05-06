@@ -9,6 +9,8 @@ require('src/resources/map')
 require('src/resources/manage_resources')
 -- humanoid
 require('src/humanoid/player')
+-- weapons
+require('src/weapons/weapon')
 
 function love.load()
 	loadResources()

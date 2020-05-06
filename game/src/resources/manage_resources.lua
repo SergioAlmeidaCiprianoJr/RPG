@@ -1,24 +1,28 @@
 function loadResources()
     -- World add collision mecanics
     world = wf.newWorld()
-    loadCollisionClass()
 
     -- Creating Player
     loadPlayer()
+
+    -- Creating Weapons
+    loadWeapons()
     
     -- Loading all maps
     loadBattlefield()
 end
 
 function updateResources(dt)
-	player:update(dt)
 	world:update(dt)
+    player:update(dt)
+    weapon:update(dt)
 end
 
 function drawResources()
 	camera:set()
 	mapBattlefield:draw()
-	player:draw()
+    player:draw()
+    weapon:draw()
 	world:draw()
 	camera:unset()
 end
@@ -31,6 +35,10 @@ end
 function loadPlayer()
     playerImg = {right = '/pixel_art/protagonist/demon_warrior_grid.png', left = '/pixel_art/protagonist/demon_warrior_grid_iv.png'}
     player = Player:new(500, 500, 'Sergio', playerImg.right, playerImg.left)
+end
+
+function loadWeapons()
+    weapon = Weapon:new(500, 500, 'sword', '/pixel_art/weapons/katana_animation_grid.png', 31*4, 40*4)
 end
 
 function loadBattlefield()

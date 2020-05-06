@@ -21,7 +21,8 @@ function Player:new(x, y, name, imgFront, imgBack)
 	self.imgPrevious = self.imgFront
 
 	-- Grid
-	self.grid = anim8.newGrid(125, 148, self.imgFront:getWidth(), self.imgFront:getHeight(), 0, 0, 8)
+	self.width, self.height = 125, 148
+	self.grid = anim8.newGrid(self.width, self.height, self.imgFront:getWidth(), self.imgFront:getHeight(), 0, 0, 8)
 
 	-- Animation
 	self.animate = anim8.newAnimation(self.grid('1-3',1), 0.1)
@@ -29,7 +30,6 @@ function Player:new(x, y, name, imgFront, imgBack)
 	-- Collider
 	self.box = {w = 120, h = 40} -- width and height
 	self.collider = world:newRectangleCollider(x, y, self.box.w, self.box.h) -- creating box for legs 
-	self.collider:setCollisionClass('Solid')
 
 	return self
 end
@@ -44,7 +44,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
-	local x, y = self:fixPosition()
+	local x, y = self:position()
 	if self.direction == 'left' then
 		self.animate:draw(self.imgBack, x, y)
 		self.imgPrevious = self.imgBack
@@ -84,11 +84,11 @@ function Player:move()
 		self.direction = nil
 	end
 	self.collider:setLinearVelocity(vectorX*WALK_SPEED, vectorY*WALK_SPEED)
-	local x, y = self:fixPosition()
+	local x, y = self:position()
 	camera:move(x, y)
 end
 
-function Player:fixPosition()
+function Player:position()
 	-- fix x and y provided by self.collider
 	-- getPosition gives rectangle's center x and y
 	local x, y = self.collider:getPosition()

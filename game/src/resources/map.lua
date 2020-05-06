@@ -24,9 +24,7 @@ end
 
 function Map:setLineColliders(collision)
 	for k, v in pairs(collision) do
-		local box = world:newLineCollider(v[1], v[2], v[3], v[4])
-		box:setType('static')
-		box:setCollisionClass('Solid')
-		table.insert(self.lineColliders, box)
+		self.lineColliders = world:newLineCollider(v[1], v[2], v[3], v[4])
+		self.lineColliders:setType('static')
 	end
 end
