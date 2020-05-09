@@ -62,11 +62,9 @@ function Player:move()
 	-- and without elseif the movement is more fluid
 	if love.keyboard.isDown('w') then
 		vectorY = -1
-		self.direction = 'up'
 	end
 	if love.keyboard.isDown('s') then
 		vectorY = 1
-		self.direction = 'down'
 	end
 	if love.keyboard.isDown('d') then
 		vectorX = 1
