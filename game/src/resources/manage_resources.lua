@@ -38,7 +38,7 @@ function loadPlayer()
 end
 
 function loadWeapons()
-    weapon = Weapon:new(500, 500, 'sword', '/pixel_art/weapons/katana_animation_grid.png', 31*4, 40*4)
+    weapon = Weapon:new(500, 500, 'sword', '/pixel_art/weapons/katana_animation_grid_iv.png', '/pixel_art/weapons/katana_animation_grid.png', 31*4, 40*4)
 end
 
 function loadBattlefield()
