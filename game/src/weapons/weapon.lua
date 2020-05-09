@@ -19,24 +19,31 @@ function Weapon:update(dt)
 end
 
 function Weapon:draw()
-    if self.count > 0 then
-        local x, y = player:position()
-        local img, animW, animH = nil
-        
-        if player.direction == 'left' then
-            img, animW, animH = self:changeAnimation('left', x-player.width, y-20)
-        elseif player.direction == 'right' then
-            img, animW, animH = self:changeAnimation('right', x+player.width, y-20)
-        else
-            if self.previousAnim == 'left' then img, animW, animH = self:changeAnimation(self.previousAnim, x-player.width, y-20)
-            else img, animW, animH = self:changeAnimation(self.previousAnim, x+player.width, y-20) end
-        end
+    local x, y = player:position()
+    local img, animW, animH = nil
     
+    -- alternating between the animation of the weapon depending on the player's direction
+    if player.direction == 'left' then
+        img, animW, animH = self:changeAnimation('left', x-player.width, y-20)
+    elseif player.direction == 'right' then
+        img, animW, animH = self:changeAnimation('right', x+player.width, y-20)
+    else
+        if self.previousAnim == 'left' then img, animW, animH = self:changeAnimation(self.previousAnim, x-player.width, y-20)
+        else img, animW, animH = self:changeAnimation(self.previousAnim, x+player.width, y-20) end
+    end
+    
+    if self.count > 0 then
+        -- drawing attack
         self.animate:draw(img, animW, animH)
         self.collider:setPosition(self.posCollider.x, self.posCollider.y)
         self.count = self.count - 1
     else
+        -- taking hitbox off the screen when not attacking
         self.collider:setPosition(INF, INF)
+        -- keeping the weapon next to the character
+        self.animate:gotoFrame(1)
+        self.animate:draw(img, animW, animH)
+        -- keeping the attack on the right side
         if player.direction == 'left' then self.previousAnim = 'left'
         elseif player.direction == 'right' then self.previousAnim = 'right'
         end
