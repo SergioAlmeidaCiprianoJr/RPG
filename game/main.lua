@@ -4,6 +4,7 @@ anim8 = require('src/libraries/anim8')
 wf = require('src/libraries/windfield')
 -- interface
 require('src/interface/menu_options')
+require('src/interface/character_status')
 -- resources
 require('src/resources/map')
 require('src/resources/manage_resources')

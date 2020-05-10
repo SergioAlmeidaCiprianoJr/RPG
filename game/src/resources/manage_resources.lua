@@ -20,21 +20,24 @@ end
 
 function drawResources()
 	camera:set()
-	mapBattlefield:draw()
-    player:draw()
-    weapon:draw()
-	world:draw()
+        mapBattlefield:draw()
+        player:draw()
+        drawLife(player.life, player.lifeDamaged, player.lifeEmpty, 75, camera.x, camera.y)
+        weapon:draw()
+        world:draw()
 	camera:unset()
 end
 
 function loadCollisionClass()
-    world:addCollisionClass('Solid')
-    world:addCollisionClass('Ghost', {ignores = {'Solid'}})
+    --world:addCollisionClass('Ghost', {ignores = {'Solid'}})
+    world:addCollisionClass('Player')
+    world:addCollisionClass('Enemy')
 end
 
 function loadPlayer()
-    playerImg = {right = '/pixel_art/protagonist/demon_warrior_grid.png', left = '/pixel_art/protagonist/demon_warrior_grid_iv.png'}
+    local playerImg = {right = '/pixel_art/protagonist/demon_warrior_grid.png', left = '/pixel_art/protagonist/demon_warrior_grid_iv.png'}
     player = Player:new(500, 500, 'Sergio', playerImg.right, playerImg.left)
+    loadLife('/pixel_art/assets/hearth.png', '/pixel_art/assets/hearth_damaged.png', '/pixel_art/assets/hearth_empty.png')
 end
 
 function loadWeapons()
@@ -42,7 +45,7 @@ function loadWeapons()
 end
 
 function loadBattlefield()
-    collision = {
+    local collision = {
         l1 = {32,   159,  2008, 159},       -- top
         l2 = {32,   1888, 2008, 1888},      -- bottom
         l3 = {32,   159,  32,   1888},      -- left

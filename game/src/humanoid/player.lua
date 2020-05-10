@@ -3,7 +3,7 @@ Player.__index = Player
 
 -- Const
 local WALK_SPEED = 400
-local MAX_LIFE = 100
+local MAX_LIFE = 4
 
 function Player:new(x, y, name, imgFront, imgBack)
 	self = setmetatable({}, Player)
@@ -12,8 +12,11 @@ function Player:new(x, y, name, imgFront, imgBack)
 	self.name = name
 	self.level = 1
 	self.life = MAX_LIFE
-	self.numberSpells = 0
+	self.lifeDamaged = 0
+	self.lifeEmpty = 0
+	self.numberUpgrades = 0
 	self.direction = 'right'
+	self.gold = 0
 
 	-- Image
 	self.imgFront = love.graphics.newImage(imgFront)
@@ -62,9 +65,11 @@ function Player:move()
 	-- and without elseif the movement is more fluid
 	if love.keyboard.isDown('w') then
 		vectorY = -1
+		self.direction = ''
 	end
 	if love.keyboard.isDown('s') then
 		vectorY = 1
+		self.direction = ''
 	end
 	if love.keyboard.isDown('d') then
 		vectorX = 1
@@ -91,13 +96,4 @@ function Player:position()
 	-- getPosition gives rectangle's center x and y
 	local x, y = self.collider:getPosition()
 	return x-self.box.w/2, y-self.box.h/2-110
-end
-
-function Player:becomeDemon()
-end
-
-function Player:isDemon()
-end
-
-function Player:becomeHuman()
 end
